@@ -24,7 +24,7 @@ namespace DSDeaths
             public string BossName = "Boss (???)";
             public int AreaDeaths = 0;
             public int FallDeaths = 0;
-            public Boolean active = false;
+            public bool active = false;
             public Segment() { }
             public Segment(string bossName, int bossDeaths, int areaDeaths, int fallDeaths)
             {
@@ -112,8 +112,7 @@ namespace DSDeaths
         }
 
         private IrcClient irc;
-        private string[] Mods =
-        {
+        private List<string> Mods = new List<string>() {
             "thejdubster",
             "candicesan",
             "matsurouga",
@@ -122,19 +121,41 @@ namespace DSDeaths
             "cptcheerios",
             "doctorblackmamba",
             "premierballvgc",
-            "kaitwynn"
+            "kaitwynn",
+            "invidentia"
         };
+        private bool expanded;
+        public bool Expanded
+        {
+            get { return expanded; }
+            set
+            {
+                btnExpand.Text = value ? "^" : "v";
+                if (value)
+                    this.Size = new Size(550, 480);
+                else
+                    this.Size = new Size(550, 250);
+
+                expanded = value;
+            }
+        }
         
         public Overlay()
         {
             InitializeComponent();
 
+            //UI
+            Expanded = false;
+
+            //Load Data
             if (!LoadData())
             {
                 CurrSegment = new Segment(BossName, BossDeaths, AreaDeaths, FallDeaths);
                 Segments.Add(CurrSegment);
                 SetCurrentSegment(CurrSegment);
             }
+
+            //Initialize Chat Component
             string oauthKey = System.IO.File.ReadAllText(@"oauthkey.txt");
             irc = new IrcClient("irc.twitch.tv", 6667,
                 "pertdies", oauthKey);
@@ -142,6 +163,7 @@ namespace DSDeaths
             irc.joinRoom("perterter");
             bgwChat.RunWorkerAsync();
             
+            //Hook Hotkeys
             gkh.HookedKeys.Add(Keys.F5);
             gkh.HookedKeys.Add(Keys.F6);
             gkh.HookedKeys.Add(Keys.F7);
@@ -242,29 +264,33 @@ namespace DSDeaths
         private CommandDeathType ParseDeathType(string type)
         {
             CommandDeathType deathType = new CommandDeathType();
+            Console.WriteLine(type);
 
-            if (type.Length != 1)
+            if (type.Length < 1 || type.Length > 2)
                 return null;
 
-            char[] chars = type.ToCharArray();
-            if (chars.Length > 1)
+            switch (type)
             {
-                if (!chars.Contains('f'))
-                {
-                    return null;
-                } else
-                {
+                case "af":
                     deathType.fall = 1;
-                }
+                    deathType.area = 1;
+                    break;
+                case "a":
+                    deathType.area = 1;
+                    break;
+                case "bf":
+                    deathType.boss = 1;
+                    deathType.fall = 1;
+                    break;
+                case "b":
+                    deathType.boss = 1;
+                    break;
+                case "f":
+                    deathType.fall = 1;
+                    break;
+                default:
+                    return null;
             }
-            if (chars.Contains('a'))
-                deathType.area = 1;
-            else if (chars.Contains('b'))
-                deathType.boss = 1;
-            else if (chars.Contains('f'))
-                deathType.fall = 1;
-            else
-                return null;
 
             return deathType;
         }
@@ -283,6 +309,9 @@ namespace DSDeaths
             deathType = deathType + (dt.boss == 1 ? "boss " : "");
             deathType = deathType + (dt.area == 1 ? "area " : "");
             deathType = deathType + (dt.fall == 1 ? "fall " : "");
+
+            Console.WriteLine(dt.fall);
+            Console.WriteLine(dt.boss);
             
             BossDeaths += amount * dt.boss;
             FallDeaths += amount * dt.fall;
@@ -428,60 +457,139 @@ namespace DSDeaths
             while (true)
             {
                 string ircMsg = irc.readMessage();
-                if (ircMsg != null && ircMsg != "" && ircMsg.Length > 0)
+                ParseChatMsg(ircMsg);
+            }
+        }
+        
+        private void ParseChatMsg(string ircMsg)
+        {
+            if (ircMsg != null && ircMsg != "" && ircMsg.Length > 0)
+            {
+                Console.WriteLine(ircMsg);
+                if (ircMsg.Equals("PING :tmi.twitch.tv"))
                 {
-                    Console.WriteLine(ircMsg);
-                    if (ircMsg.Equals("PING :tmi.twitch.tv"))
+                    irc.sendIrcMessage("PONG :tmi.twitch.tv");
+                }
+                else
+                {
+                    string user = "";
+                    string message = "";
+                    Regex regex = new Regex(@":(.*)!.*@.*.tmi.twitch.tv PRIVMSG #perterter :(.*)");
+                    Match match = regex.Match(ircMsg);
+                    if (match.Success)
                     {
-                        irc.sendIrcMessage("PONG :tmi.twitch.tv");
-                    }
-                    else
-                    {
-                        string user = "";
-                        string message = "";
-                        Regex regex = new Regex(@":(.*)!.*@.*.tmi.twitch.tv PRIVMSG #perterter :(.*)");
-                        Match match = regex.Match(ircMsg);
-                        if (match.Success)
+                        user = match.Groups[1].Value;
+                        message = match.Groups[2].Value;
+                        if (message.StartsWith("!"))
                         {
-                            user = match.Groups[1].Value;
-                            message = match.Groups[2].Value;
-                            if (message.StartsWith("!"))
+                            string[] args = message.Split(' ');
+                            string command = args[0];
+                            switch (command)
                             {
-                                string[] args = message.Split(' ');
-                                string command = args[0];
-                                switch (command) {
-                                    case "!progress":
+                                case "!progress":
+                                    {
+                                        foreach (string bossMsg in GetBossProgress())
                                         {
-                                            foreach(string bossMsg in GetBossProgress())
-                                            {
-                                                irc.sendChatMessage(bossMsg);
-                                            }
-                                            break;
+                                            irc.sendChatMessage(bossMsg);
                                         }
-                                    case "!ded":
-                                        {
-                                            if (args.Length >= 3)
-                                            {
-                                                int amount = 1;
-                                                if (args.Length >= 4)
-                                                    try { amount = Int32.Parse(args[3]); } catch(Exception) { break; }
-                                                if (args[2] == "+" && Mods.Contains(user))
-                                                    BeginInvoke((Action)(delegate { AddDeath(amount, args[1]); }));
-                                                else if (args[2] == "-" && Mods.Contains(user))
-                                                    BeginInvoke((Action)(delegate { RemoveDeath(amount, args[1]); }));
-                                            } else
-                                            {
-                                                irc.sendChatMessage(string.Format("Total Deaths: {0} (!progress for more details)", GetTotalDeaths()));
-                                            }
-                                            break;
-                                        }
-                                    default:
                                         break;
-                                }
+                                    }
+                                case "!ded":
+                                    {
+                                        if (args.Length >= 3 && Mods.Contains(user))
+                                        {
+                                            int amount = 1;
+                                            if (args.Length >= 4)
+                                                try { amount = Int32.Parse(args[3]); } catch (Exception) { break; }
+                                            if (args[2] == "+")
+                                                BeginInvoke((Action)(delegate { AddDeath(amount, args[1]); }));
+                                            else if (args[2] == "-")
+                                                BeginInvoke((Action)(delegate { RemoveDeath(amount, args[1]); }));
+                                        }
+                                        else
+                                        {
+                                            irc.sendChatMessage(string.Format("Total Deaths: {0} (!progress for more details)", GetTotalDeaths()));
+                                        }
+                                        break;
+                                    }
+                                case "!souls":
+                                    {
+                                        /*if (args.Length >= 3 && Mods.Contains(user))
+                                        {
+                                            int amount = 1;
+                                            if (args.Length >= 4)
+                                                try { amount = Int32.Parse(args[3]); } catch (Exception) { break; }
+                                            if (args[2] == "+")
+                                                BeginInvoke((Action)(delegate { AddSouls(amount); }));
+                                            else if (args[2] == "-")
+                                                BeginInvoke((Action)(delegate { RemoveSouls(amount); }));
+                                        }
+                                        else
+                                        {
+                                            irc.sendChatMessage(string.Format("Total Deaths: {0} (!progress for more details)", GetTotalDeaths()));
+                                        }
+                                        irc.sendChatMessage(string.Format("Total Deaths: {0} (!progress for more details)", GetTotalDeaths()));*/
+                                        break;
+                                    }
+                                case "!dedmod":
+                                    if (args.Length == 3 && user == "perterter")
+                                    {
+                                        if (args[1] == "+" || args[1] == "add" )
+                                            AddMod(args[2]);
+                                        else if (args[1] == "-" || args[1] == "remove")
+                                            RemoveMod(args[2]);
+                                        else
+                                            irc.sendChatMessage("Usage: !dedmod [+/-] [user]");
+                                    }
+                                    break;
+                                default:
+                                    break;
                             }
                         }
                     }
                 }
+            }
+        }
+
+        private void tbxTest_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                TextBox tbxTest = (TextBox)sender;
+                ParseChatMsg(":perterter!.*@.*.tmi.twitch.tv PRIVMSG #perterter :" + tbxTest.Text);
+                tbxTest.Clear();
+            }
+        }
+
+        private void btnExpand_Click(object sender, EventArgs e)
+        {
+            Expanded = !Expanded;
+        }
+
+        private void btnAddMod_Click(object sender, EventArgs e)
+        {
+            AddMod(tbxMod.Text);
+            tbxMod.Clear();
+        }
+
+        private void AddMod(string modName)
+        {
+            if (!Mods.Contains(modName))
+            {
+                Mods.Add(modName);
+                irc.sendChatMessage(String.Format("{0} added as a DS death mod!", modName));
+            }
+            else
+            {
+                irc.sendChatMessage(String.Format("{0} already  modded.", modName));
+            }
+        }
+
+        private void RemoveMod(string modName)
+        {
+            if (Mods.Contains(modName))
+            {
+                Mods.RemoveAll(x => x == modName);
             }
         }
     }

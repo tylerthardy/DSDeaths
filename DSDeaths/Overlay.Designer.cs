@@ -50,6 +50,11 @@
             this.bgwChat = new System.ComponentModel.BackgroundWorker();
             this.labUIFallDeaths = new System.Windows.Forms.Label();
             this.tbxFallDeaths = new System.Windows.Forms.TextBox();
+            this.tbxTest = new System.Windows.Forms.TextBox();
+            this.listView2 = new System.Windows.Forms.ListView();
+            this.btnAddMod = new System.Windows.Forms.Button();
+            this.tbxMod = new System.Windows.Forms.TextBox();
+            this.btnExpand = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -120,7 +125,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackgroundImage = global::WindowsFormsApplication6.Properties.Resources.falling;
+            this.pictureBox1.BackgroundImage = global::DSDeaths.Properties.Resources.falling;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox1.Location = new System.Drawing.Point(329, 212);
             this.pictureBox1.Name = "pictureBox1";
@@ -159,7 +164,7 @@
             this.columnHeader4});
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
-            this.listView1.Location = new System.Drawing.Point(12, 256);
+            this.listView1.Location = new System.Drawing.Point(6, 262);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(335, 214);
             this.listView1.TabIndex = 9;
@@ -188,7 +193,7 @@
             // 
             // btnNewSeg
             // 
-            this.btnNewSeg.Location = new System.Drawing.Point(12, 198);
+            this.btnNewSeg.Location = new System.Drawing.Point(12, 176);
             this.btnNewSeg.Name = "btnNewSeg";
             this.btnNewSeg.Size = new System.Drawing.Size(99, 43);
             this.btnNewSeg.TabIndex = 10;
@@ -261,12 +266,60 @@
             this.tbxFallDeaths.TabIndex = 16;
             this.tbxFallDeaths.TextChanged += new System.EventHandler(this.tbxFallDeaths_TextChanged);
             // 
+            // tbxTest
+            // 
+            this.tbxTest.Location = new System.Drawing.Point(348, 263);
+            this.tbxTest.Name = "tbxTest";
+            this.tbxTest.Size = new System.Drawing.Size(193, 20);
+            this.tbxTest.TabIndex = 18;
+            this.tbxTest.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxTest_KeyDown);
+            // 
+            // listView2
+            // 
+            this.listView2.Location = new System.Drawing.Point(348, 290);
+            this.listView2.Name = "listView2";
+            this.listView2.Size = new System.Drawing.Size(193, 160);
+            this.listView2.TabIndex = 19;
+            this.listView2.UseCompatibleStateImageBehavior = false;
+            // 
+            // btnAddMod
+            // 
+            this.btnAddMod.Location = new System.Drawing.Point(517, 455);
+            this.btnAddMod.Name = "btnAddMod";
+            this.btnAddMod.Size = new System.Drawing.Size(24, 23);
+            this.btnAddMod.TabIndex = 20;
+            this.btnAddMod.Text = "+";
+            this.btnAddMod.UseVisualStyleBackColor = true;
+            this.btnAddMod.Click += new System.EventHandler(this.btnAddMod_Click);
+            // 
+            // tbxMod
+            // 
+            this.tbxMod.Location = new System.Drawing.Point(348, 456);
+            this.tbxMod.Name = "tbxMod";
+            this.tbxMod.Size = new System.Drawing.Size(163, 20);
+            this.tbxMod.TabIndex = 21;
+            // 
+            // btnExpand
+            // 
+            this.btnExpand.Location = new System.Drawing.Point(12, 222);
+            this.btnExpand.Name = "btnExpand";
+            this.btnExpand.Size = new System.Drawing.Size(99, 25);
+            this.btnExpand.TabIndex = 22;
+            this.btnExpand.Text = "v";
+            this.btnExpand.UseVisualStyleBackColor = true;
+            this.btnExpand.Click += new System.EventHandler(this.btnExpand_Click);
+            // 
             // Overlay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkGray;
-            this.ClientSize = new System.Drawing.Size(550, 251);
+            this.ClientSize = new System.Drawing.Size(550, 480);
+            this.Controls.Add(this.btnExpand);
+            this.Controls.Add(this.tbxMod);
+            this.Controls.Add(this.btnAddMod);
+            this.Controls.Add(this.listView2);
+            this.Controls.Add(this.tbxTest);
             this.Controls.Add(this.labUIFallDeaths);
             this.Controls.Add(this.tbxFallDeaths);
             this.Controls.Add(this.labUIAreaDeaths);
@@ -278,6 +331,7 @@
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.tbxBossName);
             this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Overlay";
             this.Text = "Dark Souls Deaths";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Overlay_FormClosing);
@@ -312,6 +366,11 @@
         private System.Windows.Forms.Label labUIFallDeaths;
         private System.Windows.Forms.TextBox tbxFallDeaths;
         private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.TextBox tbxTest;
+        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.Button btnAddMod;
+        private System.Windows.Forms.TextBox tbxMod;
+        private System.Windows.Forms.Button btnExpand;
     }
 }
 
