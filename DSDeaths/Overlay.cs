@@ -543,7 +543,7 @@ namespace DSDeaths
                                     }
                                 case "!souls":
                                     {
-                                        /*if (args.Length >= 3 && Mods.Contains(user))
+                                        if (args.Length >= 3 && Mods.Contains(user))
                                         {
                                             int amount = 1;
                                             if (args.Length >= 4)
@@ -557,7 +557,7 @@ namespace DSDeaths
                                         {
                                             irc.sendChatMessage(string.Format("Total Deaths: {0} (!progress for more details)", GetTotalDeaths()));
                                         }
-                                        irc.sendChatMessage(string.Format("Total Deaths: {0} (!progress for more details)", GetTotalDeaths()));*/
+                                        irc.sendChatMessage(string.Format("Total Deaths: {0} (!progress for more details)", GetTotalDeaths()));
                                         break;
                                     }
                                 case "!dedmod":
