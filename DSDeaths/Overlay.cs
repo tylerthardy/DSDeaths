@@ -24,32 +24,33 @@ namespace DSDeaths
             public string BossName = "Boss (???)";
             public int AreaDeaths = 0;
             public int FallDeaths = 0;
+            public int SoulsLost = 0;
             public bool active = false;
             public Segment() { }
-            public Segment(string bossName, int bossDeaths, int areaDeaths, int fallDeaths)
+            public Segment(string bossName, int bossDeaths, int areaDeaths, int fallDeaths, int soulsLost)
             {
                 this.BossName = bossName;
                 this.BossDeaths = bossDeaths;
                 this.AreaDeaths = areaDeaths;
                 this.FallDeaths = fallDeaths;
+                this.SoulsLost = soulsLost;
             }
         }
         class SegmentList<T> : List<Segment>
         {
             public int TotalDeaths = 0;
+            public int TotalSouls = 0;
             public new void Add(Segment item)
             {
-
-                int totalDeaths = 0;
-                foreach(Segment segment in this)
+                foreach (Segment segment in this)
                 {
-                    if(segment.active)
+                    if (segment.active)
                         segment.active = false;
 
-                    totalDeaths += segment.BossDeaths;
-                    totalDeaths += segment.AreaDeaths;
+                    TotalDeaths += segment.BossDeaths;
+                    TotalDeaths += segment.AreaDeaths;
+                    TotalSouls += segment.SoulsLost;
                 }
-                this.TotalDeaths = totalDeaths;
 
                 item.active = true;
                 base.Add(item);
@@ -110,21 +111,23 @@ namespace DSDeaths
                 CurrSegment.FallDeaths = value;
             }
         }
-
+        private int soulsLost;
+        public int SoulsLost
+        {
+            get { return soulsLost; }
+            set
+            {
+                if (value < 0)
+                    value = 0;
+                //labSouls.Text = string.Format(": {0}", value);
+                //tbxSoulsLost.Text = value.ToString();
+                soulsLost = value;
+                CurrSegment.SoulsLost = value;
+            }
+        }
         private IrcClient irc;
-        
-        private List<string> Mods = new List<string>()/* {
-            "thejdubster",
-            "candicesan",
-            "matsurouga",
-            "toxcicle",
-            "perterter",
-            "cptcheerios",
-            "doctorblackmamba",
-            "premierballvgc",
-            "kaitwynn",
-            "invidentia"
-        }*/;
+
+        private List<string> Mods = new List<string>();
 
         private bool expanded;
         public bool Expanded
@@ -141,7 +144,7 @@ namespace DSDeaths
                 expanded = value;
             }
         }
-        
+
         public Overlay()
         {
             InitializeComponent();
@@ -152,7 +155,7 @@ namespace DSDeaths
             //Load Data
             if (!LoadData())
             {
-                CurrSegment = new Segment(BossName, BossDeaths, AreaDeaths, FallDeaths);
+                CurrSegment = new Segment(BossName, BossDeaths, AreaDeaths, FallDeaths, SoulsLost);
                 Segments.Add(CurrSegment);
                 SetCurrentSegment(CurrSegment);
             }
@@ -167,7 +170,7 @@ namespace DSDeaths
 
             irc.joinRoom("perterter");
             bgwChat.RunWorkerAsync();
-            
+
             //Hook Hotkeys
             gkh.HookedKeys.Add(Keys.F5);
             gkh.HookedKeys.Add(Keys.F6);
@@ -213,7 +216,7 @@ namespace DSDeaths
         {
             using (System.IO.StreamWriter file = new System.IO.StreamWriter("data.txt"))
             {
-                foreach(Segment segment in Segments)
+                foreach (Segment segment in Segments)
                 {
                     String[] data =
                     {
@@ -228,7 +231,7 @@ namespace DSDeaths
 
             using (System.IO.StreamWriter file = new System.IO.StreamWriter("mods.txt"))
             {
-                foreach(string mod in Mods)
+                foreach (string mod in Mods)
                 {
                     file.WriteLine(mod);
                 }
@@ -245,11 +248,11 @@ namespace DSDeaths
                     string[] values = line.Split(',');
                     try
                     {
-                        Segment newSegment = new Segment(values[0], Int32.Parse(values[1]), Int32.Parse(values[2]), Int32.Parse(values[3]));
+                        Segment newSegment = new Segment(values[0], Int32.Parse(values[1]), Int32.Parse(values[2]), Int32.Parse(values[3]), Int32.Parse(values[4]));
                         Segments.Add(newSegment);
-                    } catch (Exception e) { Console.WriteLine("EX:"+e);  return false; }
+                    } catch (Exception e) { Console.WriteLine("EX:" + e); return false; }
                 }
-                SetCurrentSegment(Segments[lines.Length-1]);
+                SetCurrentSegment(Segments[lines.Length - 1]);
                 UpdateSegmentList();
                 return true;
             }
@@ -336,13 +339,13 @@ namespace DSDeaths
                 irc.sendChatMessage("Usage: !ded [type] [+/-] [amount] Type is a (area), b (boss), af (area fall), or bf (boss fall).");
                 return;
             }
-            
+
             string plural = amount > 1 ? "s" : "";
             string deathType = "";
             deathType = deathType + (dt.boss == 1 ? "boss " : "");
             deathType = deathType + (dt.area == 1 ? "area " : "");
             deathType = deathType + (dt.fall == 1 ? "fall " : "");
-                        
+
             BossDeaths += amount * dt.boss;
             FallDeaths += amount * dt.fall;
             AreaDeaths += amount * dt.area;
@@ -379,13 +382,18 @@ namespace DSDeaths
             return Segments.TotalDeaths + BossDeaths + AreaDeaths;
         }
 
+        private int GetTotalSouls()
+        {
+            return Segments.TotalSouls + SoulsLost;
+        }
+
         private string[] GetBossProgress()
         {
             List<string> progress = new List<string>();
 
             progress.Add("/me Dark Souls 1 Boss Progress");
             progress.Add("/me Boss Name: Deaths (Area Deaths) [Falls]");
-            foreach(Segment segment in Segments) {
+            foreach (Segment segment in Segments) {
                 progress.Add(string.Format("{0}: {1} ({2}) [{3}]", segment.BossName, segment.BossDeaths, segment.AreaDeaths, segment.FallDeaths));
             }
 
@@ -417,7 +425,7 @@ namespace DSDeaths
         {
             Save();
         }
-        
+
         private void bossMinus_Click(object sender, EventArgs e)
         {
             RemoveDeath(1, "a");
@@ -453,7 +461,7 @@ namespace DSDeaths
             Regex rgx = new Regex("[^(0-9)]");
             string text = rgx.Replace(((TextBox)sender).Text, "");
             ((TextBox)sender).Text = text;
-            if(text.Length > 0)
+            if (text.Length > 0)
                 BossDeaths = Int32.Parse(text);
             else
                 BossDeaths = 0;
@@ -489,7 +497,7 @@ namespace DSDeaths
                 ParseChatMsg(ircMsg);
             }
         }
-        
+
         private void ParseChatMsg(string ircMsg)
         {
             if (ircMsg != null && ircMsg != "" && ircMsg.Length > 0)
@@ -543,27 +551,25 @@ namespace DSDeaths
                                     }
                                 case "!souls":
                                     {
-                                        if (args.Length >= 3 && Mods.Contains(user))
+                                        if (args.Length == 3 && Mods.Contains(user))
                                         {
-                                            int amount = 1;
-                                            if (args.Length >= 4)
-                                                try { amount = Int32.Parse(args[3]); } catch (Exception) { break; }
-                                            if (args[2] == "+")
+                                            int amount = 0;
+                                            try { amount = Int32.Parse(args[2]); } catch (Exception) { break; }
+                                            if (args[1] == "+")
                                                 BeginInvoke((Action)(delegate { AddSouls(amount); }));
-                                            else if (args[2] == "-")
+                                            else if (args[1] == "-")
                                                 BeginInvoke((Action)(delegate { RemoveSouls(amount); }));
                                         }
                                         else
                                         {
-                                            irc.sendChatMessage(string.Format("Total Deaths: {0} (!progress for more details)", GetTotalDeaths()));
+                                            irc.sendChatMessage(string.Format("Total Souls Lost: {0}", GetTotalSouls()));
                                         }
-                                        irc.sendChatMessage(string.Format("Total Deaths: {0} (!progress for more details)", GetTotalDeaths()));
                                         break;
                                     }
                                 case "!dedmod":
                                     if (args.Length == 3 && user == "perterter")
                                     {
-                                        if (args[1] == "+" || args[1] == "add" )
+                                        if (args[1] == "+" || args[1] == "add")
                                             AddMod(args[2]);
                                         else if (args[1] == "-" || args[1] == "remove")
                                             RemoveMod(args[2]);
@@ -627,7 +633,7 @@ namespace DSDeaths
         private void RefreshModList()
         {
             listMods.Clear();
-            foreach(string mod in Mods)
+            foreach (string mod in Mods)
             {
                 listMods.Items.Add(new ListViewItem(mod));
             }
@@ -635,7 +641,7 @@ namespace DSDeaths
 
         private void listMods_MouseClick(object sender, MouseEventArgs e)
         {
-            if(e.Button== MouseButtons.Right)
+            if (e.Button == MouseButtons.Right)
                 if (listMods.FocusedItem.Bounds.Contains(e.Location) == true)
                     cntxtMenMod.Show(Cursor.Position);
         }
@@ -644,5 +650,22 @@ namespace DSDeaths
         {
             RemoveMod(listMods.FocusedItem.Text);
         }
+
+        private void AddSouls(int amount, bool suppress = false)
+        {
+            SoulsLost += amount;
+
+            if (!suppress)
+                irc.sendChatMessage(string.Format("Added {0} lost souls.", amount));
+        }
+
+        private void RemoveSouls(int amount, bool suppress = false)
+        {
+            SoulsLost -= amount;
+
+            if (!suppress)
+                irc.sendChatMessage(string.Format("Removed {0} lost souls.", amount));
+        }
     }
+
 }

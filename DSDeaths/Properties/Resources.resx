@@ -121,4 +121,7 @@
   <data name="falling" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>falling.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="large_soul" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\large_soul.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
