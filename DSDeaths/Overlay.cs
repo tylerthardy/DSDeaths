@@ -112,7 +112,8 @@ namespace DSDeaths
         }
 
         private IrcClient irc;
-        private List<string> Mods = new List<string>() {
+        
+        private List<string> Mods = new List<string>()/* {
             "thejdubster",
             "candicesan",
             "matsurouga",
@@ -123,7 +124,8 @@ namespace DSDeaths
             "premierballvgc",
             "kaitwynn",
             "invidentia"
-        };
+        }*/;
+
         private bool expanded;
         public bool Expanded
         {
@@ -132,9 +134,9 @@ namespace DSDeaths
             {
                 btnExpand.Text = value ? "^" : "v";
                 if (value)
-                    this.Size = new Size(550, 480);
+                    this.Size = new Size(550, 480 + 38);
                 else
-                    this.Size = new Size(550, 250);
+                    this.Size = new Size(550, 250 + 38);
 
                 expanded = value;
             }
@@ -154,6 +156,9 @@ namespace DSDeaths
                 Segments.Add(CurrSegment);
                 SetCurrentSegment(CurrSegment);
             }
+
+            //Load Mods
+            LoadMods();
 
             //Initialize Chat Component
             string oauthKey = System.IO.File.ReadAllText(@"oauthkey.txt");
@@ -204,7 +209,7 @@ namespace DSDeaths
         }
 
 
-        private void SaveData()
+        private void Save()
         {
             using (System.IO.StreamWriter file = new System.IO.StreamWriter("data.txt"))
             {
@@ -218,6 +223,14 @@ namespace DSDeaths
                         segment.FallDeaths.ToString()
                     };
                     file.WriteLine(string.Join(",", data));
+                }
+            }
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter("mods.txt"))
+            {
+                foreach(string mod in Mods)
+                {
+                    file.WriteLine(mod);
                 }
             }
         }
@@ -244,6 +257,27 @@ namespace DSDeaths
             return false;
         }
 
+        private bool LoadMods()
+        {
+            if (File.Exists("mods.txt"))
+            {
+                string[] lines = System.IO.File.ReadAllLines("mods.txt");
+                foreach (string line in lines)
+                {
+                    string[] values = line.Split(',');
+                    try
+                    {
+                        Mods.Add(line);
+                    }
+                    catch (Exception e) { Console.WriteLine("EX:" + e); return false; }
+                }
+                RefreshModList();
+                return true;
+            }
+
+            return false;
+        }
+
         private void SetCurrentSegment(Segment segment)
         {
             //Can this be done procedurally because variable names match?
@@ -264,7 +298,6 @@ namespace DSDeaths
         private CommandDeathType ParseDeathType(string type)
         {
             CommandDeathType deathType = new CommandDeathType();
-            Console.WriteLine(type);
 
             if (type.Length < 1 || type.Length > 2)
                 return null;
@@ -309,10 +342,7 @@ namespace DSDeaths
             deathType = deathType + (dt.boss == 1 ? "boss " : "");
             deathType = deathType + (dt.area == 1 ? "area " : "");
             deathType = deathType + (dt.fall == 1 ? "fall " : "");
-
-            Console.WriteLine(dt.fall);
-            Console.WriteLine(dt.boss);
-            
+                        
             BossDeaths += amount * dt.boss;
             FallDeaths += amount * dt.fall;
             AreaDeaths += amount * dt.area;
@@ -375,7 +405,6 @@ namespace DSDeaths
             listView1.Items.Clear();
             foreach (Segment segment in Segments)
             {
-                Console.WriteLine(BossDeaths.ToString());
                 ListViewItem lvi = new ListViewItem(segment.BossName);
                 lvi.SubItems.Add(segment.BossDeaths.ToString());
                 lvi.SubItems.Add(segment.AreaDeaths.ToString());
@@ -386,7 +415,7 @@ namespace DSDeaths
 
         private void Overlay_FormClosing(object sender, FormClosingEventArgs e)
         {
-            SaveData();
+            Save();
         }
         
         private void bossMinus_Click(object sender, EventArgs e)
@@ -583,6 +612,7 @@ namespace DSDeaths
             {
                 irc.sendChatMessage(String.Format("{0} already  modded.", modName));
             }
+            RefreshModList(); //TODO: Update dynamically, instead of full refresh
         }
 
         private void RemoveMod(string modName)
@@ -591,6 +621,28 @@ namespace DSDeaths
             {
                 Mods.RemoveAll(x => x == modName);
             }
+            RefreshModList(); //TODO: Update dynamically, instead of full refresh
+        }
+
+        private void RefreshModList()
+        {
+            listMods.Clear();
+            foreach(string mod in Mods)
+            {
+                listMods.Items.Add(new ListViewItem(mod));
+            }
+        }
+
+        private void listMods_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(e.Button== MouseButtons.Right)
+                if (listMods.FocusedItem.Bounds.Contains(e.Location) == true)
+                    cntxtMenMod.Show(Cursor.Position);
+        }
+
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RemoveMod(listMods.FocusedItem.Text);
         }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.labTotal = new System.Windows.Forms.Label();
             this.labThisSeg = new System.Windows.Forms.Label();
             this.labBoss = new System.Windows.Forms.Label();
@@ -51,12 +52,18 @@
             this.labUIFallDeaths = new System.Windows.Forms.Label();
             this.tbxFallDeaths = new System.Windows.Forms.TextBox();
             this.tbxTest = new System.Windows.Forms.TextBox();
-            this.listView2 = new System.Windows.Forms.ListView();
+            this.listMods = new System.Windows.Forms.ListView();
             this.btnAddMod = new System.Windows.Forms.Button();
             this.tbxMod = new System.Windows.Forms.TextBox();
             this.btnExpand = new System.Windows.Forms.Button();
+            this.cntxtMenMod = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.removeModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblChatTest = new System.Windows.Forms.Label();
+            this.lblMod = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.cntxtMenMod.SuspendLayout();
             this.SuspendLayout();
             // 
             // labTotal
@@ -268,19 +275,21 @@
             // 
             // tbxTest
             // 
-            this.tbxTest.Location = new System.Drawing.Point(348, 263);
+            this.tbxTest.Location = new System.Drawing.Point(408, 263);
             this.tbxTest.Name = "tbxTest";
-            this.tbxTest.Size = new System.Drawing.Size(193, 20);
+            this.tbxTest.Size = new System.Drawing.Size(133, 20);
             this.tbxTest.TabIndex = 18;
             this.tbxTest.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxTest_KeyDown);
             // 
-            // listView2
+            // listMods
             // 
-            this.listView2.Location = new System.Drawing.Point(348, 290);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(193, 160);
-            this.listView2.TabIndex = 19;
-            this.listView2.UseCompatibleStateImageBehavior = false;
+            this.listMods.Location = new System.Drawing.Point(348, 290);
+            this.listMods.Name = "listMods";
+            this.listMods.Size = new System.Drawing.Size(193, 160);
+            this.listMods.TabIndex = 19;
+            this.listMods.UseCompatibleStateImageBehavior = false;
+            this.listMods.View = System.Windows.Forms.View.List;
+            this.listMods.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listMods_MouseClick);
             // 
             // btnAddMod
             // 
@@ -294,9 +303,9 @@
             // 
             // tbxMod
             // 
-            this.tbxMod.Location = new System.Drawing.Point(348, 456);
+            this.tbxMod.Location = new System.Drawing.Point(406, 456);
             this.tbxMod.Name = "tbxMod";
-            this.tbxMod.Size = new System.Drawing.Size(163, 20);
+            this.tbxMod.Size = new System.Drawing.Size(105, 20);
             this.tbxMod.TabIndex = 21;
             // 
             // btnExpand
@@ -309,16 +318,58 @@
             this.btnExpand.UseVisualStyleBackColor = true;
             this.btnExpand.Click += new System.EventHandler(this.btnExpand_Click);
             // 
+            // cntxtMenMod
+            // 
+            this.cntxtMenMod.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removeModToolStripMenuItem});
+            this.cntxtMenMod.Name = "cntxtMenMod";
+            this.cntxtMenMod.Size = new System.Drawing.Size(146, 26);
+            // 
+            // removeModToolStripMenuItem
+            // 
+            this.removeModToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removeToolStripMenuItem});
+            this.removeModToolStripMenuItem.Name = "removeModToolStripMenuItem";
+            this.removeModToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.removeModToolStripMenuItem.Text = "Remove Mod";
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removeToolStripMenuItem.Text = "Remove";
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+            // 
+            // lblChatTest
+            // 
+            this.lblChatTest.AutoSize = true;
+            this.lblChatTest.Location = new System.Drawing.Point(347, 266);
+            this.lblChatTest.Name = "lblChatTest";
+            this.lblChatTest.Size = new System.Drawing.Size(55, 13);
+            this.lblChatTest.TabIndex = 24;
+            this.lblChatTest.Text = "Test Cmd:";
+            // 
+            // lblMod
+            // 
+            this.lblMod.AutoSize = true;
+            this.lblMod.Location = new System.Drawing.Point(347, 460);
+            this.lblMod.Name = "lblMod";
+            this.lblMod.Size = new System.Drawing.Size(53, 13);
+            this.lblMod.TabIndex = 25;
+            this.lblMod.Text = "Add Mod:";
+            // 
             // Overlay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkGray;
             this.ClientSize = new System.Drawing.Size(550, 480);
+            this.Controls.Add(this.lblMod);
+            this.Controls.Add(this.lblChatTest);
             this.Controls.Add(this.btnExpand);
             this.Controls.Add(this.tbxMod);
             this.Controls.Add(this.btnAddMod);
-            this.Controls.Add(this.listView2);
+            this.Controls.Add(this.listMods);
             this.Controls.Add(this.tbxTest);
             this.Controls.Add(this.labUIFallDeaths);
             this.Controls.Add(this.tbxFallDeaths);
@@ -331,12 +382,13 @@
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.tbxBossName);
             this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Overlay";
             this.Text = "Dark Souls Deaths";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Overlay_FormClosing);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.cntxtMenMod.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -367,10 +419,15 @@
         private System.Windows.Forms.TextBox tbxFallDeaths;
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.TextBox tbxTest;
-        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.ListView listMods;
         private System.Windows.Forms.Button btnAddMod;
         private System.Windows.Forms.TextBox tbxMod;
         private System.Windows.Forms.Button btnExpand;
+        private System.Windows.Forms.ContextMenuStrip cntxtMenMod;
+        private System.Windows.Forms.ToolStripMenuItem removeModToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
+        private System.Windows.Forms.Label lblChatTest;
+        private System.Windows.Forms.Label lblMod;
     }
 }
 
