@@ -119,8 +119,10 @@ namespace DSDeaths
             {
                 if (value < 0)
                     value = 0;
-                //labSouls.Text = string.Format(": {0}", value);
-                //tbxSoulsLost.Text = value.ToString();
+                labSouls.Text = string.Format("Lost: {0}", value);
+                tbxSoulsLost.Text = value.ToString();
+                Size textSize = TextRenderer.MeasureText(labSouls.Text, labSouls.Font);
+                imgSouls.Location = new Point(labSouls.Width - textSize.Width - 50, labSouls.Location.Y);
                 soulsLost = value;
                 CurrSegment.SoulsLost = value;
             }
@@ -137,9 +139,9 @@ namespace DSDeaths
             {
                 btnExpand.Text = value ? "^" : "v";
                 if (value)
-                    this.Size = new Size(550, 480 + 38);
+                    this.Size = new Size(550, 520 + 38);
                 else
-                    this.Size = new Size(550, 250 + 38);
+                    this.Size = new Size(550, 290 + 38);
 
                 expanded = value;
             }
@@ -223,7 +225,8 @@ namespace DSDeaths
                         segment.BossName,
                         segment.BossDeaths.ToString(),
                         segment.AreaDeaths.ToString(),
-                        segment.FallDeaths.ToString()
+                        segment.FallDeaths.ToString(),
+                        segment.SoulsLost.ToString()
                     };
                     file.WriteLine(string.Join(",", data));
                 }
@@ -289,6 +292,7 @@ namespace DSDeaths
             BossDeaths = segment.BossDeaths;
             AreaDeaths = segment.AreaDeaths;
             FallDeaths = segment.FallDeaths;
+            SoulsLost = segment.SoulsLost;
             segment.active = true;
         }
 

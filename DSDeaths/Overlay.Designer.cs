@@ -61,9 +61,14 @@
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblChatTest = new System.Windows.Forms.Label();
             this.lblMod = new System.Windows.Forms.Label();
+            this.imgSouls = new System.Windows.Forms.PictureBox();
+            this.labSouls = new System.Windows.Forms.Label();
+            this.labUISoulsLost = new System.Windows.Forms.Label();
+            this.tbxSoulsLost = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.cntxtMenMod.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgSouls)).BeginInit();
             this.SuspendLayout();
             // 
             // labTotal
@@ -83,7 +88,7 @@
             this.labThisSeg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labThisSeg.Font = new System.Drawing.Font("OptimusPrincepsSemiBold", 26.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labThisSeg.ForeColor = System.Drawing.Color.White;
-            this.labThisSeg.Location = new System.Drawing.Point(0, 76);
+            this.labThisSeg.Location = new System.Drawing.Point(0, 114);
             this.labThisSeg.Name = "labThisSeg";
             this.labThisSeg.Size = new System.Drawing.Size(420, 55);
             this.labThisSeg.TabIndex = 0;
@@ -95,7 +100,7 @@
             this.labBoss.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labBoss.Font = new System.Drawing.Font("OptimusPrincepsSemiBold", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labBoss.ForeColor = System.Drawing.Color.White;
-            this.labBoss.Location = new System.Drawing.Point(0, 122);
+            this.labBoss.Location = new System.Drawing.Point(0, 160);
             this.labBoss.Name = "labBoss";
             this.labBoss.Size = new System.Drawing.Size(417, 55);
             this.labBoss.TabIndex = 2;
@@ -107,7 +112,7 @@
             this.labArea.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labArea.Font = new System.Drawing.Font("OptimusPrincepsSemiBold", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labArea.ForeColor = System.Drawing.Color.White;
-            this.labArea.Location = new System.Drawing.Point(0, 166);
+            this.labArea.Location = new System.Drawing.Point(0, 204);
             this.labArea.Name = "labArea";
             this.labArea.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.labArea.Size = new System.Drawing.Size(417, 55);
@@ -119,22 +124,24 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.Black;
+            this.panel1.Controls.Add(this.imgSouls);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.labFall);
             this.panel1.Controls.Add(this.labBoss);
             this.panel1.Controls.Add(this.labThisSeg);
             this.panel1.Controls.Add(this.labArea);
             this.panel1.Controls.Add(this.labTotal);
+            this.panel1.Controls.Add(this.labSouls);
             this.panel1.Location = new System.Drawing.Point(130, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(420, 250);
+            this.panel1.Size = new System.Drawing.Size(420, 290);
             this.panel1.TabIndex = 4;
             // 
             // pictureBox1
             // 
             this.pictureBox1.BackgroundImage = global::DSDeaths.Properties.Resources.falling;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(329, 212);
+            this.pictureBox1.Location = new System.Drawing.Point(329, 250);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(33, 35);
             this.pictureBox1.TabIndex = 4;
@@ -146,7 +153,7 @@
             this.labFall.BackColor = System.Drawing.Color.Transparent;
             this.labFall.Font = new System.Drawing.Font("OptimusPrincepsSemiBold", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labFall.ForeColor = System.Drawing.Color.White;
-            this.labFall.Location = new System.Drawing.Point(348, 212);
+            this.labFall.Location = new System.Drawing.Point(348, 250);
             this.labFall.Name = "labFall";
             this.labFall.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.labFall.Size = new System.Drawing.Size(69, 38);
@@ -171,7 +178,7 @@
             this.columnHeader4});
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
-            this.listView1.Location = new System.Drawing.Point(6, 262);
+            this.listView1.Location = new System.Drawing.Point(6, 300);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(335, 214);
             this.listView1.TabIndex = 9;
@@ -200,7 +207,7 @@
             // 
             // btnNewSeg
             // 
-            this.btnNewSeg.Location = new System.Drawing.Point(12, 176);
+            this.btnNewSeg.Location = new System.Drawing.Point(13, 216);
             this.btnNewSeg.Name = "btnNewSeg";
             this.btnNewSeg.Size = new System.Drawing.Size(99, 43);
             this.btnNewSeg.TabIndex = 10;
@@ -275,7 +282,7 @@
             // 
             // tbxTest
             // 
-            this.tbxTest.Location = new System.Drawing.Point(408, 263);
+            this.tbxTest.Location = new System.Drawing.Point(408, 301);
             this.tbxTest.Name = "tbxTest";
             this.tbxTest.Size = new System.Drawing.Size(133, 20);
             this.tbxTest.TabIndex = 18;
@@ -283,7 +290,7 @@
             // 
             // listMods
             // 
-            this.listMods.Location = new System.Drawing.Point(348, 290);
+            this.listMods.Location = new System.Drawing.Point(348, 328);
             this.listMods.Name = "listMods";
             this.listMods.Size = new System.Drawing.Size(193, 160);
             this.listMods.TabIndex = 19;
@@ -293,7 +300,7 @@
             // 
             // btnAddMod
             // 
-            this.btnAddMod.Location = new System.Drawing.Point(517, 455);
+            this.btnAddMod.Location = new System.Drawing.Point(517, 493);
             this.btnAddMod.Name = "btnAddMod";
             this.btnAddMod.Size = new System.Drawing.Size(24, 23);
             this.btnAddMod.TabIndex = 20;
@@ -303,14 +310,14 @@
             // 
             // tbxMod
             // 
-            this.tbxMod.Location = new System.Drawing.Point(406, 456);
+            this.tbxMod.Location = new System.Drawing.Point(406, 494);
             this.tbxMod.Name = "tbxMod";
             this.tbxMod.Size = new System.Drawing.Size(105, 20);
             this.tbxMod.TabIndex = 21;
             // 
             // btnExpand
             // 
-            this.btnExpand.Location = new System.Drawing.Point(12, 222);
+            this.btnExpand.Location = new System.Drawing.Point(12, 265);
             this.btnExpand.Name = "btnExpand";
             this.btnExpand.Size = new System.Drawing.Size(99, 25);
             this.btnExpand.TabIndex = 22;
@@ -336,14 +343,14 @@
             // removeToolStripMenuItem
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.removeToolStripMenuItem.Text = "Remove";
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
             // lblChatTest
             // 
             this.lblChatTest.AutoSize = true;
-            this.lblChatTest.Location = new System.Drawing.Point(347, 266);
+            this.lblChatTest.Location = new System.Drawing.Point(347, 304);
             this.lblChatTest.Name = "lblChatTest";
             this.lblChatTest.Size = new System.Drawing.Size(55, 13);
             this.lblChatTest.TabIndex = 24;
@@ -352,18 +359,59 @@
             // lblMod
             // 
             this.lblMod.AutoSize = true;
-            this.lblMod.Location = new System.Drawing.Point(347, 460);
+            this.lblMod.Location = new System.Drawing.Point(347, 498);
             this.lblMod.Name = "lblMod";
             this.lblMod.Size = new System.Drawing.Size(53, 13);
             this.lblMod.TabIndex = 25;
             this.lblMod.Text = "Add Mod:";
+            // 
+            // imgSouls
+            // 
+            this.imgSouls.Image = global::DSDeaths.Properties.Resources.large_soul;
+            this.imgSouls.Location = new System.Drawing.Point(224, 69);
+            this.imgSouls.Name = "imgSouls";
+            this.imgSouls.Size = new System.Drawing.Size(48, 55);
+            this.imgSouls.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.imgSouls.TabIndex = 6;
+            this.imgSouls.TabStop = false;
+            // 
+            // labSouls
+            // 
+            this.labSouls.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labSouls.Font = new System.Drawing.Font("OptimusPrincepsSemiBold", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labSouls.ForeColor = System.Drawing.Color.White;
+            this.labSouls.Location = new System.Drawing.Point(0, 69);
+            this.labSouls.Name = "labSouls";
+            this.labSouls.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.labSouls.Size = new System.Drawing.Size(417, 55);
+            this.labSouls.TabIndex = 7;
+            this.labSouls.Text = "Lost: %s";
+            this.labSouls.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // labUISoulsLost
+            // 
+            this.labUISoulsLost.AutoSize = true;
+            this.labUISoulsLost.Location = new System.Drawing.Point(9, 173);
+            this.labUISoulsLost.Name = "labUISoulsLost";
+            this.labUISoulsLost.Size = new System.Drawing.Size(56, 13);
+            this.labUISoulsLost.TabIndex = 27;
+            this.labUISoulsLost.Text = "Souls Lost";
+            // 
+            // tbxSoulsLost
+            // 
+            this.tbxSoulsLost.Location = new System.Drawing.Point(12, 189);
+            this.tbxSoulsLost.Name = "tbxSoulsLost";
+            this.tbxSoulsLost.Size = new System.Drawing.Size(100, 20);
+            this.tbxSoulsLost.TabIndex = 26;
             // 
             // Overlay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkGray;
-            this.ClientSize = new System.Drawing.Size(550, 480);
+            this.ClientSize = new System.Drawing.Size(550, 520);
+            this.Controls.Add(this.labUISoulsLost);
+            this.Controls.Add(this.tbxSoulsLost);
             this.Controls.Add(this.lblMod);
             this.Controls.Add(this.lblChatTest);
             this.Controls.Add(this.btnExpand);
@@ -389,6 +437,7 @@
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.cntxtMenMod.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.imgSouls)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -428,6 +477,10 @@
         private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
         private System.Windows.Forms.Label lblChatTest;
         private System.Windows.Forms.Label lblMod;
+        private System.Windows.Forms.PictureBox imgSouls;
+        private System.Windows.Forms.Label labSouls;
+        private System.Windows.Forms.Label labUISoulsLost;
+        private System.Windows.Forms.TextBox tbxSoulsLost;
     }
 }
 
