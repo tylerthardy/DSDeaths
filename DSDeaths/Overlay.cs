@@ -421,6 +421,7 @@ namespace DSDeaths
                 lvi.SubItems.Add(segment.BossDeaths.ToString());
                 lvi.SubItems.Add(segment.AreaDeaths.ToString());
                 lvi.SubItems.Add(segment.FallDeaths.ToString());
+                lvi.SubItems.Add(segment.SoulsLost.ToString());
                 listView1.Items.Add(lvi);
             }
         }

@@ -34,8 +34,10 @@
             this.labBoss = new System.Windows.Forms.Label();
             this.labArea = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.imgSouls = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.labFall = new System.Windows.Forms.Label();
+            this.labSouls = new System.Windows.Forms.Label();
             this.tbxBossName = new System.Windows.Forms.TextBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -61,14 +63,13 @@
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblChatTest = new System.Windows.Forms.Label();
             this.lblMod = new System.Windows.Forms.Label();
-            this.imgSouls = new System.Windows.Forms.PictureBox();
-            this.labSouls = new System.Windows.Forms.Label();
             this.labUISoulsLost = new System.Windows.Forms.Label();
             this.tbxSoulsLost = new System.Windows.Forms.TextBox();
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgSouls)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.cntxtMenMod.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imgSouls)).BeginInit();
             this.SuspendLayout();
             // 
             // labTotal
@@ -88,7 +89,7 @@
             this.labThisSeg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labThisSeg.Font = new System.Drawing.Font("OptimusPrincepsSemiBold", 26.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labThisSeg.ForeColor = System.Drawing.Color.White;
-            this.labThisSeg.Location = new System.Drawing.Point(0, 114);
+            this.labThisSeg.Location = new System.Drawing.Point(0, 68);
             this.labThisSeg.Name = "labThisSeg";
             this.labThisSeg.Size = new System.Drawing.Size(420, 55);
             this.labThisSeg.TabIndex = 0;
@@ -100,7 +101,7 @@
             this.labBoss.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labBoss.Font = new System.Drawing.Font("OptimusPrincepsSemiBold", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labBoss.ForeColor = System.Drawing.Color.White;
-            this.labBoss.Location = new System.Drawing.Point(0, 160);
+            this.labBoss.Location = new System.Drawing.Point(0, 114);
             this.labBoss.Name = "labBoss";
             this.labBoss.Size = new System.Drawing.Size(417, 55);
             this.labBoss.TabIndex = 2;
@@ -112,7 +113,7 @@
             this.labArea.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labArea.Font = new System.Drawing.Font("OptimusPrincepsSemiBold", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labArea.ForeColor = System.Drawing.Color.White;
-            this.labArea.Location = new System.Drawing.Point(0, 204);
+            this.labArea.Location = new System.Drawing.Point(0, 157);
             this.labArea.Name = "labArea";
             this.labArea.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.labArea.Size = new System.Drawing.Size(417, 55);
@@ -137,11 +138,21 @@
             this.panel1.Size = new System.Drawing.Size(420, 290);
             this.panel1.TabIndex = 4;
             // 
+            // imgSouls
+            // 
+            this.imgSouls.Image = global::DSDeaths.Properties.Resources.large_soul;
+            this.imgSouls.Location = new System.Drawing.Point(224, 233);
+            this.imgSouls.Name = "imgSouls";
+            this.imgSouls.Size = new System.Drawing.Size(48, 55);
+            this.imgSouls.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.imgSouls.TabIndex = 6;
+            this.imgSouls.TabStop = false;
+            // 
             // pictureBox1
             // 
             this.pictureBox1.BackgroundImage = global::DSDeaths.Properties.Resources.falling;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(329, 250);
+            this.pictureBox1.Location = new System.Drawing.Point(329, 203);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(33, 35);
             this.pictureBox1.TabIndex = 4;
@@ -153,13 +164,26 @@
             this.labFall.BackColor = System.Drawing.Color.Transparent;
             this.labFall.Font = new System.Drawing.Font("OptimusPrincepsSemiBold", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labFall.ForeColor = System.Drawing.Color.White;
-            this.labFall.Location = new System.Drawing.Point(348, 250);
+            this.labFall.Location = new System.Drawing.Point(348, 203);
             this.labFall.Name = "labFall";
             this.labFall.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.labFall.Size = new System.Drawing.Size(69, 38);
             this.labFall.TabIndex = 5;
             this.labFall.Text = ": %s";
             this.labFall.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // labSouls
+            // 
+            this.labSouls.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labSouls.Font = new System.Drawing.Font("OptimusPrincepsSemiBold", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labSouls.ForeColor = System.Drawing.Color.White;
+            this.labSouls.Location = new System.Drawing.Point(0, 235);
+            this.labSouls.Name = "labSouls";
+            this.labSouls.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.labSouls.Size = new System.Drawing.Size(417, 55);
+            this.labSouls.TabIndex = 7;
+            this.labSouls.Text = "Lost: %s";
+            this.labSouls.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tbxBossName
             // 
@@ -175,7 +199,8 @@
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3,
-            this.columnHeader4});
+            this.columnHeader4,
+            this.columnHeader5});
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(6, 300);
@@ -188,22 +213,22 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Boss Name";
-            this.columnHeader1.Width = 108;
+            this.columnHeader1.Width = 150;
             // 
             // columnHeader2
             // 
-            this.columnHeader2.Text = "Boss Deaths";
-            this.columnHeader2.Width = 72;
+            this.columnHeader2.Text = "Boss";
+            this.columnHeader2.Width = 37;
             // 
             // columnHeader3
             // 
-            this.columnHeader3.Text = "Area Deaths";
-            this.columnHeader3.Width = 71;
+            this.columnHeader3.Text = "Area";
+            this.columnHeader3.Width = 35;
             // 
             // columnHeader4
             // 
-            this.columnHeader4.Text = "Fall Deaths";
-            this.columnHeader4.Width = 80;
+            this.columnHeader4.Text = "Falls";
+            this.columnHeader4.Width = 34;
             // 
             // btnNewSeg
             // 
@@ -365,29 +390,6 @@
             this.lblMod.TabIndex = 25;
             this.lblMod.Text = "Add Mod:";
             // 
-            // imgSouls
-            // 
-            this.imgSouls.Image = global::DSDeaths.Properties.Resources.large_soul;
-            this.imgSouls.Location = new System.Drawing.Point(224, 69);
-            this.imgSouls.Name = "imgSouls";
-            this.imgSouls.Size = new System.Drawing.Size(48, 55);
-            this.imgSouls.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.imgSouls.TabIndex = 6;
-            this.imgSouls.TabStop = false;
-            // 
-            // labSouls
-            // 
-            this.labSouls.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labSouls.Font = new System.Drawing.Font("OptimusPrincepsSemiBold", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labSouls.ForeColor = System.Drawing.Color.White;
-            this.labSouls.Location = new System.Drawing.Point(0, 69);
-            this.labSouls.Name = "labSouls";
-            this.labSouls.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.labSouls.Size = new System.Drawing.Size(417, 55);
-            this.labSouls.TabIndex = 7;
-            this.labSouls.Text = "Lost: %s";
-            this.labSouls.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // labUISoulsLost
             // 
             this.labUISoulsLost.AutoSize = true;
@@ -403,6 +405,11 @@
             this.tbxSoulsLost.Name = "tbxSoulsLost";
             this.tbxSoulsLost.Size = new System.Drawing.Size(100, 20);
             this.tbxSoulsLost.TabIndex = 26;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Souls";
+            this.columnHeader5.Width = 40;
             // 
             // Overlay
             // 
@@ -435,9 +442,9 @@
             this.Text = "Dark Souls Deaths";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Overlay_FormClosing);
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.imgSouls)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.cntxtMenMod.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.imgSouls)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -481,6 +488,7 @@
         private System.Windows.Forms.Label labSouls;
         private System.Windows.Forms.Label labUISoulsLost;
         private System.Windows.Forms.TextBox tbxSoulsLost;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
     }
 }
 
