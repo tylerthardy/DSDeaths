@@ -44,6 +44,7 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnNewSeg = new System.Windows.Forms.Button();
             this.labUIBossName = new System.Windows.Forms.Label();
             this.labUIBossDeahts = new System.Windows.Forms.Label();
@@ -65,7 +66,6 @@
             this.lblMod = new System.Windows.Forms.Label();
             this.labUISoulsLost = new System.Windows.Forms.Label();
             this.tbxSoulsLost = new System.Windows.Forms.TextBox();
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgSouls)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -141,9 +141,9 @@
             // imgSouls
             // 
             this.imgSouls.Image = global::DSDeaths.Properties.Resources.large_soul;
-            this.imgSouls.Location = new System.Drawing.Point(224, 233);
+            this.imgSouls.Location = new System.Drawing.Point(235, 243);
             this.imgSouls.Name = "imgSouls";
-            this.imgSouls.Size = new System.Drawing.Size(48, 55);
+            this.imgSouls.Size = new System.Drawing.Size(40, 45);
             this.imgSouls.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.imgSouls.TabIndex = 6;
             this.imgSouls.TabStop = false;
@@ -229,6 +229,11 @@
             // 
             this.columnHeader4.Text = "Falls";
             this.columnHeader4.Width = 34;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Souls";
+            this.columnHeader5.Width = 40;
             // 
             // btnNewSeg
             // 
@@ -405,11 +410,6 @@
             this.tbxSoulsLost.Name = "tbxSoulsLost";
             this.tbxSoulsLost.Size = new System.Drawing.Size(100, 20);
             this.tbxSoulsLost.TabIndex = 26;
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "Souls";
-            this.columnHeader5.Width = 40;
             // 
             // Overlay
             // 

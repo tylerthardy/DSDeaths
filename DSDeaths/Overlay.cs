@@ -42,6 +42,7 @@ namespace DSDeaths
             public int TotalSouls = 0;
             public new void Add(Segment item)
             {
+                TotalDeaths = 0;
                 foreach (Segment segment in this)
                 {
                     if (segment.active)
