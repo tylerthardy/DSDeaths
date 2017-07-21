@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.IO;
 using Utilities;
+using Newtonsoft.Json;
 
 namespace DSDeaths
 {
@@ -132,6 +133,8 @@ namespace DSDeaths
 
         private List<string> Mods = new List<string>();
 
+        private Config config = new Config();
+
         private bool expanded;
         private Size expandSize;
         private Size smallSize = new Size(566, 290 + 38); //38 is the surrounding frame dimensions
@@ -169,6 +172,9 @@ namespace DSDeaths
 
             //Load Mods
             LoadMods();
+
+            //Load Config
+            LoadConfig();
 
             //Initialize Chat Component
             string oauthKey = System.IO.File.ReadAllText(@"oauthkey.txt");
@@ -245,9 +251,15 @@ namespace DSDeaths
                 }
             }
 
+            config.BGColor = this.panel1.BackColor.ToArgb();
+            config.FGColor = this.labArea.ForeColor.ToArgb();
+            Console.WriteLine(this.panel1.BackColor);
+            Console.WriteLine(config.BGColor);
+            Console.WriteLine(config.FGColor);
             using (System.IO.StreamWriter file = new System.IO.StreamWriter("config.txt"))
             {
-                file.WriteLine("BGColor=" + panel1.BackColor);
+                string json = JsonConvert.SerializeObject(config);
+                file.Write(json);
             }
         }
 
@@ -292,6 +304,41 @@ namespace DSDeaths
             }
 
             return false;
+        }
+
+        private bool LoadConfig()
+        {
+            Console.WriteLine('a');
+            if (File.Exists("config.txt"))
+            {
+                /*string[] lines = System.IO.File.ReadAllLines("config.txt");
+                foreach (string line in lines)
+                {
+                    string[] values = line.Split('=');
+                    try
+                    {
+                        this[values[0]]
+                    }
+                    catch (Exception e) { Console.WriteLine("EX:" + e); return false; }
+                }
+                RefreshModList();
+                return true;*/
+
+                Console.WriteLine('b');
+                string[] lines = System.IO.File.ReadAllLines("config.txt");
+                Console.WriteLine(lines[0]);
+                string json = String.Join("", lines);
+                Console.WriteLine(json);
+
+                config = JsonConvert.DeserializeObject<Config>(json);
+                Console.WriteLine(config.BGColor);
+                Console.WriteLine(Color.FromArgb(config.BGColor));
+                setBGColor(Color.FromArgb(config.BGColor));
+                setFGColor(Color.FromArgb(config.FGColor));
+            }
+
+            return false;
+
         }
 
         private void SetCurrentSegment(Segment segment)
@@ -685,8 +732,51 @@ namespace DSDeaths
         private void btnBGColor_Click(object sender, EventArgs e)
         {
             colorDialog1.ShowDialog();
-            panel1.BackColor = colorDialog1.Color;
-            btnBGColor.BackColor = colorDialog1.Color;
+            setBGColor(colorDialog1.Color);
+        }
+        private void btnFGColor_Click(object sender, EventArgs e)
+        {
+            colorDialog1.ShowDialog();
+            setFGColor(colorDialog1.Color);
+        }
+
+        private void setBGColor(Color color)
+        {
+            //Store initial BG color
+            Color initialColor = panel1.BackColor;
+
+            //Set actual UI and options button UI BG color
+            panel1.BackColor = color;
+            btnBGColor.BackColor = color;
+        }
+
+        private void setFGColor(Color color)
+        {
+            Color initialColor = this.labArea.ForeColor;
+
+            //Set labels' colors
+            foreach(Label label in this.panel1.Controls.OfType<Label>())
+            {
+                label.ForeColor = color;
+            }
+            
+            //Update falling icon foreground to match
+            Bitmap bmp = new Bitmap(this.pbFalls.BackgroundImage);
+            for (int x = 0; x < bmp.Width; x++)
+            {
+                for (int y = 0; y < bmp.Height; y++)
+                {
+                    Color currColor = bmp.GetPixel(x, y);
+                    if (currColor.R == initialColor.R && currColor.G == initialColor.G && currColor.B == initialColor.B) 
+                    {
+                        bmp.SetPixel(x, y, color);
+                    }
+                }
+            }
+            this.pbFalls.BackgroundImage = bmp;
+
+            //Set options button UI BG color
+            btnFGColor.BackColor = color;
         }
     }
 
