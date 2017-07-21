@@ -133,16 +133,19 @@ namespace DSDeaths
         private List<string> Mods = new List<string>();
 
         private bool expanded;
+        private Size expandSize;
+        private Size smallSize = new Size(550, 290 + 38); //38 is the surrounding frame dimensions
         public bool Expanded
         {
             get { return expanded; }
             set
             {
+                //Store expanded size
                 btnExpand.Text = value ? "^" : "v";
                 if (value)
-                    this.Size = new Size(550, 520 + 38);
+                    this.Size = expandSize;
                 else
-                    this.Size = new Size(550, 290 + 38);
+                    this.Size = smallSize;
 
                 expanded = value;
             }
@@ -153,6 +156,7 @@ namespace DSDeaths
             InitializeComponent();
 
             //UI
+            expandSize = this.Size;
             Expanded = false;
 
             //Load Data
@@ -239,6 +243,11 @@ namespace DSDeaths
                 {
                     file.WriteLine(mod);
                 }
+            }
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter("config.txt"))
+            {
+                file.WriteLine("BGColor=" + panel1.BackColor);
             }
         }
 
@@ -671,6 +680,13 @@ namespace DSDeaths
 
             if (!suppress)
                 irc.sendChatMessage(string.Format("Removed {0} lost souls.", amount));
+        }
+
+        private void btnBGColor_Click(object sender, EventArgs e)
+        {
+            colorDialog1.ShowDialog();
+            panel1.BackColor = colorDialog1.Color;
+            btnBGColor.BackColor = colorDialog1.Color;
         }
     }
 

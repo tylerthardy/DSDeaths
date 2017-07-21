@@ -66,6 +66,9 @@
             this.lblMod = new System.Windows.Forms.Label();
             this.labUISoulsLost = new System.Windows.Forms.Label();
             this.tbxSoulsLost = new System.Windows.Forms.TextBox();
+            this.btnBGColor = new System.Windows.Forms.Button();
+            this.labBGColor = new System.Windows.Forms.Label();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgSouls)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -411,12 +414,34 @@
             this.tbxSoulsLost.Size = new System.Drawing.Size(100, 20);
             this.tbxSoulsLost.TabIndex = 26;
             // 
+            // btnBGColor
+            // 
+            this.btnBGColor.BackColor = this.panel1.BackColor;
+            this.btnBGColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBGColor.Location = new System.Drawing.Point(40, 521);
+            this.btnBGColor.Name = "btnBGColor";
+            this.btnBGColor.Size = new System.Drawing.Size(29, 28);
+            this.btnBGColor.TabIndex = 28;
+            this.btnBGColor.UseVisualStyleBackColor = false;
+            this.btnBGColor.Click += new System.EventHandler(this.btnBGColor_Click);
+            // 
+            // labBGColor
+            // 
+            this.labBGColor.AutoSize = true;
+            this.labBGColor.Location = new System.Drawing.Point(6, 521);
+            this.labBGColor.Name = "labBGColor";
+            this.labBGColor.Size = new System.Drawing.Size(31, 26);
+            this.labBGColor.TabIndex = 29;
+            this.labBGColor.Text = "BG\r\nColor";
+            // 
             // Overlay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkGray;
-            this.ClientSize = new System.Drawing.Size(550, 520);
+            this.ClientSize = new System.Drawing.Size(550, 561);
+            this.Controls.Add(this.labBGColor);
+            this.Controls.Add(this.btnBGColor);
             this.Controls.Add(this.labUISoulsLost);
             this.Controls.Add(this.tbxSoulsLost);
             this.Controls.Add(this.lblMod);
@@ -489,6 +514,9 @@
         private System.Windows.Forms.Label labUISoulsLost;
         private System.Windows.Forms.TextBox tbxSoulsLost;
         private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.Button btnBGColor;
+        private System.Windows.Forms.Label labBGColor;
+        private System.Windows.Forms.ColorDialog colorDialog1;
     }
 }
 
