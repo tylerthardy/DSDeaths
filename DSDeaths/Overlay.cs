@@ -134,7 +134,7 @@ namespace DSDeaths
 
         private bool expanded;
         private Size expandSize;
-        private Size smallSize = new Size(550, 290 + 38); //38 is the surrounding frame dimensions
+        private Size smallSize = new Size(566, 290 + 38); //38 is the surrounding frame dimensions
         public bool Expanded
         {
             get { return expanded; }
