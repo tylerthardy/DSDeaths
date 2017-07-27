@@ -26,7 +26,6 @@ namespace DSDeaths
             public int AreaDeaths = 0;
             public int FallDeaths = 0;
             public int SoulsLost = 0;
-            public bool active = false;
             public Segment() { }
             public Segment(string bossName, int bossDeaths, int areaDeaths, int fallDeaths, int soulsLost)
             {
@@ -39,78 +38,72 @@ namespace DSDeaths
         }
         class SegmentList<T> : List<Segment>
         {
-            public int TotalDeaths = 0;
+            private int totalDeaths;
+            public int TotalDeaths
+            {
+                get
+                {
+                    int tds = 0;
+                    foreach (Segment segment in this)
+                    {
+                        tds += segment.BossDeaths;
+                        tds += segment.AreaDeaths;
+                    }
+                    return tds;
+                }
+                set { totalDeaths = value; }
+            }
+
             public int TotalSouls = 0;
             public new void Add(Segment item)
             {
-                TotalDeaths = 0;
-                foreach (Segment segment in this)
-                {
-                    if (segment.active)
-                        segment.active = false;
-
-                    TotalDeaths += segment.BossDeaths;
-                    TotalDeaths += segment.AreaDeaths;
-                    TotalSouls += segment.SoulsLost;
-                }
-
-                item.active = true;
                 base.Add(item);
             }
         }
         private SegmentList<Segment> Segments = new SegmentList<Segment>();
-
-        private Segment CurrSegment;
-        private string bossName;
+        
         public string BossName
         {
-            get { return bossName; }
+            get { return Segments[Segments.Count - 1].BossName; }
             set
             {
-                labBoss.Text = string.Format("{0}: {1}", value, bossDeaths);
+                labBoss.Text = string.Format("{0}: {1}", value, Segments[Segments.Count - 1].BossDeaths);
                 tbxBossName.Text = value;
-                bossName = value;
-                CurrSegment.BossName = value;
+                Segments[Segments.Count - 1].BossName = value;
             }
         }
-        private int bossDeaths;
         public int BossDeaths
         {
-            get { return bossDeaths; }
+            get { return Segments[Segments.Count - 1].BossDeaths; }
             set
             {
-                labBoss.Text = string.Format("{0}: {1}", bossName, value);
+                labBoss.Text = string.Format("{0}: {1}", Segments[Segments.Count - 1].BossName, value);
                 tbxBossDeaths.Text = value.ToString();
-                bossDeaths = value;
-                CurrSegment.BossDeaths = value;
-                labTotal.Text = string.Format("Deaths: {0}", GetTotalDeaths());
+                Segments[Segments.Count - 1].BossDeaths = value;
+                labTotal.Text = string.Format("Deaths: {0}", Segments.TotalDeaths);
             }
         }
-        private int areaDeaths;
         public int AreaDeaths
         {
-            get { return areaDeaths; }
+            get { return Segments[Segments.Count - 1].AreaDeaths; }
             set
             {
+                Segments[Segments.Count - 1].AreaDeaths = value;
                 labArea.Text = string.Format("Area: {0}", value);
                 tbxAreaDeaths.Text = value.ToString();
-                areaDeaths = value;
-                CurrSegment.AreaDeaths = value;
-                labTotal.Text = string.Format("Deaths: {0}", GetTotalDeaths());
+                labTotal.Text = string.Format("Deaths: {0}", Segments.TotalDeaths);
             }
         }
-        private int fallDeaths;
         public int FallDeaths
         {
-            get { return fallDeaths; }
+            get { return Segments[Segments.Count - 1].FallDeaths; }
             set
             {
                 if (value < 0)
                     value = 0;
                 labFall.Text = string.Format(": {0}", value);
                 tbxFallDeaths.Text = value.ToString();
-                fallDeaths = value;
-                CurrSegment.FallDeaths = value;
+                Segments[Segments.Count - 1].FallDeaths = value;
             }
         }
         private int soulsLost;
@@ -126,7 +119,6 @@ namespace DSDeaths
                 Size textSize = TextRenderer.MeasureText(labSouls.Text, labSouls.Font);
                 imgSouls.Location = new Point(labSouls.Width - textSize.Width - 50, labSouls.Location.Y);
                 soulsLost = value;
-                CurrSegment.SoulsLost = value;
             }
         }
         private IrcClient irc;
@@ -165,10 +157,10 @@ namespace DSDeaths
             //Load Data
             if (!LoadData())
             {
-                CurrSegment = new Segment(BossName, BossDeaths, AreaDeaths, FallDeaths, SoulsLost);
-                Segments.Add(CurrSegment);
-                SetCurrentSegment(CurrSegment);
+                Segment FirstSegment = new Segment(BossName, BossDeaths, AreaDeaths, FallDeaths, SoulsLost);
+                Segments.Add(FirstSegment);
             }
+            UpdateCounts();
 
             //Load Mods
             LoadMods();
@@ -191,6 +183,15 @@ namespace DSDeaths
             gkh.HookedKeys.Add(Keys.F8);
             gkh.KeyDown += new KeyEventHandler(gkh_KeyDown);
             gkh.KeyUp += new KeyEventHandler(gkh_KeyUp);
+        }
+
+        private void UpdateCounts()
+        {
+            Segment CurrSegment = Segments[Segments.Count - 1];
+            BossName = CurrSegment.BossName;
+            AreaDeaths = CurrSegment.AreaDeaths;
+            BossDeaths = CurrSegment.BossDeaths;
+            FallDeaths = CurrSegment.FallDeaths;
         }
 
         void gkh_KeyDown(object sender, KeyEventArgs e)
@@ -277,7 +278,6 @@ namespace DSDeaths
                         Segments.Add(newSegment);
                     } catch (Exception e) { Console.WriteLine("EX:" + e); return false; }
                 }
-                SetCurrentSegment(Segments[lines.Length - 1]);
                 UpdateSegmentList();
                 return true;
             }
@@ -319,18 +319,6 @@ namespace DSDeaths
             }
 
             return false;
-        }
-
-        private void SetCurrentSegment(Segment segment)
-        {
-            //Can this be done procedurally because variable names match?
-            CurrSegment = segment;
-            BossName = segment.BossName;
-            BossDeaths = segment.BossDeaths;
-            AreaDeaths = segment.AreaDeaths;
-            FallDeaths = segment.FallDeaths;
-            SoulsLost = segment.SoulsLost;
-            segment.active = true;
         }
 
         private class CommandDeathType
@@ -387,12 +375,15 @@ namespace DSDeaths
             deathType = deathType + (dt.area == 1 ? "area " : "");
             deathType = deathType + (dt.fall == 1 ? "fall " : "");
 
+            
             BossDeaths += amount * dt.boss;
             FallDeaths += amount * dt.fall;
             AreaDeaths += amount * dt.area;
 
             if (!suppress)
                 irc.sendChatMessage(string.Format("Added {0} {1}death{2}.", amount, deathType, plural));
+
+            UpdateCounts();
         }
 
         private void RemoveDeath(int amount, string type, bool suppress = false)
@@ -416,16 +407,8 @@ namespace DSDeaths
 
             if (!suppress)
                 irc.sendChatMessage(string.Format("Removed {0} {1}death{2}.", amount, deathType, plural));
-        }
 
-        private int GetTotalDeaths()
-        {
-            return Segments.TotalDeaths + BossDeaths + AreaDeaths;
-        }
-
-        private int GetTotalSouls()
-        {
-            return Segments.TotalSouls + SoulsLost;
+            UpdateCounts();
         }
 
         private string[] GetBossProgress()
@@ -446,7 +429,8 @@ namespace DSDeaths
             Segment newSegment = new Segment();
             Segments.Add(newSegment);
             UpdateSegmentList();
-            SetCurrentSegment(newSegment);
+
+            UpdateCounts();
         }
 
         private void UpdateSegmentList()
@@ -587,7 +571,7 @@ namespace DSDeaths
                                         }
                                         else
                                         {
-                                            irc.sendChatMessage(string.Format("Total Deaths: {0} (!progress for more details)", GetTotalDeaths()));
+                                            irc.sendChatMessage(string.Format("Total Deaths: {0} (!progress for more details)", Segments.TotalDeaths));
                                         }
                                         break;
                                     }
@@ -604,7 +588,7 @@ namespace DSDeaths
                                         }
                                         else
                                         {
-                                            irc.sendChatMessage(string.Format("Total Souls Lost: {0}", GetTotalSouls()));
+                                            irc.sendChatMessage(string.Format("Total Souls Lost: {0}", Segments.TotalSouls));
                                         }
                                         break;
                                     }
@@ -627,10 +611,13 @@ namespace DSDeaths
                                     {
                                         if (args[1] == "remove")
                                         {
+                                            Segment CurrSegment = Segments[Segments.Count - 1];
                                             if(CurrSegment.AreaDeaths + CurrSegment.BossDeaths == 0)
                                             {
-                                                BeginInvoke((Action)(delegate { Segments.RemoveAt(Segments.Count - 1); }));
-                                                BeginInvoke((Action)(delegate { SetCurrentSegment(Segments[Segments.Count - 1]); }));
+                                                BeginInvoke((Action)(delegate {
+                                                    Segments.RemoveAt(Segments.Count -1);
+                                                    UpdateCounts();
+                                                }));
                                             }
                                             else
                                                 irc.sendChatMessage("ERR: Current segment has deaths. Deaths must total 0 to be removed.");
