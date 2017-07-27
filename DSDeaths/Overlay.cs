@@ -308,37 +308,17 @@ namespace DSDeaths
 
         private bool LoadConfig()
         {
-            Console.WriteLine('a');
             if (File.Exists("config.txt"))
-            {
-                /*string[] lines = System.IO.File.ReadAllLines("config.txt");
-                foreach (string line in lines)
-                {
-                    string[] values = line.Split('=');
-                    try
-                    {
-                        this[values[0]]
-                    }
-                    catch (Exception e) { Console.WriteLine("EX:" + e); return false; }
-                }
-                RefreshModList();
-                return true;*/
-
-                Console.WriteLine('b');
+            {                
                 string[] lines = System.IO.File.ReadAllLines("config.txt");
-                Console.WriteLine(lines[0]);
                 string json = String.Join("", lines);
-                Console.WriteLine(json);
 
                 config = JsonConvert.DeserializeObject<Config>(json);
-                Console.WriteLine(config.BGColor);
-                Console.WriteLine(Color.FromArgb(config.BGColor));
                 setBGColor(Color.FromArgb(config.BGColor));
                 setFGColor(Color.FromArgb(config.FGColor));
             }
 
             return false;
-
         }
 
         private void SetCurrentSegment(Segment segment)
@@ -581,7 +561,7 @@ namespace DSDeaths
                         message = match.Groups[2].Value;
                         if (message.StartsWith("!"))
                         {
-                            string[] args = message.Split(' ');
+                            List<string> args = new List<string>(message.Split(' '));
                             string command = args[0];
                             switch (command)
                             {
@@ -595,10 +575,10 @@ namespace DSDeaths
                                     }
                                 case "!ded":
                                     {
-                                        if (args.Length >= 3 && Mods.Contains(user))
+                                        if (args.Count >= 3 && Mods.Contains(user))
                                         {
                                             int amount = 1;
-                                            if (args.Length >= 4)
+                                            if (args.Count >= 4)
                                                 try { amount = Int32.Parse(args[3]); } catch (Exception) { break; }
                                             if (args[2] == "+")
                                                 BeginInvoke((Action)(delegate { AddDeath(amount, args[1]); }));
@@ -613,7 +593,7 @@ namespace DSDeaths
                                     }
                                 case "!souls":
                                     {
-                                        if (args.Length == 3 && Mods.Contains(user))
+                                        if (args.Count == 3 && Mods.Contains(user))
                                         {
                                             int amount = 0;
                                             try { amount = Int32.Parse(args[2]); } catch (Exception) { break; }
@@ -629,7 +609,7 @@ namespace DSDeaths
                                         break;
                                     }
                                 case "!dedmod":
-                                    if (args.Length == 3 && user == "perterter")
+                                    if (args.Count == 3 && user == "perterter")
                                     {
                                         if (args[1] == "+" || args[1] == "add")
                                             AddMod(args[2]);
@@ -637,6 +617,24 @@ namespace DSDeaths
                                             RemoveMod(args[2]);
                                         else
                                             irc.sendChatMessage("Usage: !dedmod [+/-] [user]");
+                                    }
+                                    break;
+                                case "!newsegment":
+                                    if(args.Count == 1)
+                                    {
+                                        BeginInvoke((Action)(delegate { NewSegment(); }));
+                                    } else if(args.Count > 1)
+                                    {
+                                        if (args[1] == "remove")
+                                        {
+                                            if(CurrSegment.AreaDeaths + CurrSegment.BossDeaths == 0)
+                                            {
+                                                BeginInvoke((Action)(delegate { Segments.RemoveAt(Segments.Count - 1); }));
+                                                BeginInvoke((Action)(delegate { SetCurrentSegment(Segments[Segments.Count - 1]); }));
+                                            }
+                                            else
+                                                irc.sendChatMessage("ERR: Current segment has deaths. Deaths must total 0 to be removed.");
+                                        }
                                     }
                                     break;
                                 default:
