@@ -54,7 +54,20 @@ namespace DSDeaths
                 set { totalDeaths = value; }
             }
 
-            public int TotalSouls = 0;
+            private int totalSouls;
+            public int TotalSouls
+            {
+                get
+                {
+                    int ts = 0;
+                    foreach (Segment segment in this)
+                    {
+                        ts += segment.SoulsLost;
+                    }
+                    return ts;
+                }
+                set { totalSouls = value; }
+            }
             public new void Add(Segment item)
             {
                 base.Add(item);
@@ -192,6 +205,7 @@ namespace DSDeaths
             AreaDeaths = CurrSegment.AreaDeaths;
             BossDeaths = CurrSegment.BossDeaths;
             FallDeaths = CurrSegment.FallDeaths;
+            SoulsLost = Segments.TotalSouls;
         }
 
         void gkh_KeyDown(object sender, KeyEventArgs e)
