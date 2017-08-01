@@ -618,23 +618,27 @@ namespace DSDeaths
                                     }
                                     break;
                                 case "!newsegment":
-                                    if(args.Count == 1)
+                                case "!newarea":
+                                    if (Mods.Contains(user))
                                     {
-                                        BeginInvoke((Action)(delegate { NewSegment(); }));
-                                    } else if(args.Count > 1)
-                                    {
-                                        if (args[1] == "remove")
+                                        if(args.Count == 1)
                                         {
-                                            Segment CurrSegment = Segments[Segments.Count - 1];
-                                            if(CurrSegment.AreaDeaths + CurrSegment.BossDeaths == 0)
+                                            BeginInvoke((Action)(delegate { NewSegment(); }));
+                                        } else if(args.Count > 1)
+                                        {
+                                            if (args[1] == "remove")
                                             {
-                                                BeginInvoke((Action)(delegate {
-                                                    Segments.RemoveAt(Segments.Count -1);
-                                                    UpdateCounts();
-                                                }));
+                                                Segment CurrSegment = Segments[Segments.Count - 1];
+                                                if(CurrSegment.AreaDeaths + CurrSegment.BossDeaths == 0)
+                                                {
+                                                    BeginInvoke((Action)(delegate {
+                                                        Segments.RemoveAt(Segments.Count -1);
+                                                        UpdateCounts();
+                                                    }));
+                                                }
+                                                else
+                                                    irc.sendChatMessage("ERR: Current segment has deaths. Deaths must total 0 to be removed.");
                                             }
-                                            else
-                                                irc.sendChatMessage("ERR: Current segment has deaths. Deaths must total 0 to be removed.");
                                         }
                                     }
                                     break;
