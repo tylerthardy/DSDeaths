@@ -444,6 +444,8 @@ namespace DSDeaths
             Segments.Add(newSegment);
             UpdateSegmentList();
 
+            irc.sendChatMessage("New segment added!");
+
             UpdateCounts();
         }
 
