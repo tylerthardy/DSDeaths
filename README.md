@@ -2,6 +2,7 @@
 Dark Souls death tracker. Used primarily for capture by Open Broadcaster Software; used in a Twitch.tv broadcast of Dark Souls I through III. Allows selected viewers to add deaths to the counter on screen; tracks both area (before boss), boss, and fall deaths. Allows for custom names for boss segments. Also has an option for generating a styled webpage log for the entire playthrough (example found [here](http://perterter.com/DS1)).
 
 ![Example of Usage](https://i.imgur.com/CPvMjr1.png)
+![Screenshot of Software](https://i.imgur.com/eE9IMcz.png)
 
 ## Usage
 
@@ -16,7 +17,7 @@ Where type can be the values:
 ```Can only be used by broadcaster```
 Adds/removes (`+/-`) viewer with `name` to list of viewers who can modify deaths/segments.
 
-```!newareaa [remove]``` or ```!newsegment [remove]```
+```!newarea [remove]``` or ```!newsegment [remove]```
 Begins a new segment (usually used after a boss completion).  
 `remove` is an optional parameter which removes the most recently added segment. Does not allow for removal of segment with deaths already added to prevent mistakes.
 
